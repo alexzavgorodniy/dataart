@@ -1,14 +1,14 @@
-package com.dataart.service;
+package com.dataart.task2.service;
 
 import java.util.Arrays;
 
-public class SortMerge {
+class SortMerge {
 
-    public static void sortMerge(Integer[] ints) {
+    static Integer[] sortMerge(Integer[] ints) {
         Integer len = ints.length;
-        Integer n = 1; // кратность сравнений (сравнивать по 1-му элем., 2-м ...)
-        Integer shift; // сдвиг в перебираемом массиве
-        Integer two_size; // количество элементов для 2-го массива
+        Integer n = 1;
+        Integer shift;
+        Integer two_size;
         Integer[] arr2;
         while (n < len) {
             shift = 0;
@@ -19,18 +19,20 @@ public class SortMerge {
                 two_size = (shift + n * 2 > len) ? (len - (shift + n)) : n;
                 arr2 = merge(Arrays.copyOfRange(ints, shift, shift + n),
                         Arrays.copyOfRange(ints, shift + n, shift + n + two_size));
-                for (int i = 0; i < n + two_size; ++i) {
-                    ints[shift + i] = arr2[i]; // замена на отсортированное
+                if (n + two_size >= 0) {
+                    System.arraycopy(arr2, 0, ints, shift, n + two_size);
                 }
                 shift += n * 2;
             }
             n *= 2;
         }
+
+        return ints;
     }
 
     private static Integer[] merge(Integer[] arr_1, Integer[] arr_2) {
-        Integer len_1 = arr_1.length, len_2 = arr_2.length;
-        Integer a = 0, b = 0, len = len_1 + len_2; // a, b - счетчики в массивах
+        int len_1 = arr_1.length, len_2 = arr_2.length;
+        int a = 0, b = 0, len = len_1 + len_2;
         Integer[] result = new Integer[len];
         for (int i = 0; i < len; i++) {
             if (b < len_2 && a < len_1) {
@@ -45,6 +47,7 @@ public class SortMerge {
                 result[i] = arr_1[a++];
             }
         }
+
         return result;
     }
 }
